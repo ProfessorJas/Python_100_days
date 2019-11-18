@@ -1,0 +1,93 @@
+decorator: 装饰器又称装饰函数，一种返回值也是函数的函数
+
+目的：不对现有函数进行修改单情况下，实现额外功能
+
+语法糖：指计算机语言中添加的某种语法，这种语法对语言的并没有影响，但是更方便程序员使用。
+        语法糖可增加程序可读性，减少程序出错的机会
+
+2. 运行机制
+简单来说，以下两段代码在语义上可以划等号
+
+def IAmDecorator(foo):
+    '''I am a decorator'''
+    pass
+
+@IAmDecorator
+def tobeDecorated(...):
+    '''I am the decoratee'''
+    pass
+
+AND....
+
+def IAmDecorator(foo):
+    '''I am a decorator'''
+    pass
+
+def tobeDecorated(...):
+    '''I am the decoratee'''
+    pass
+tobeDecorated = IAmDecorator(tobeDecorated)
+
+可以看出，使用装饰器@语法，就相当于将具体定义的函数最为参数传入装饰器函数，而装饰器函数则经过一系列操作，返回一个新函数，
+然后再将这个新的函数值给原先的函数名
+
+装饰函数有且仅有一个参数，即要被修饰的原函数
+
+函数装饰器 和 类装饰器
+
+Python内置模块functools中的wraps工具，实现"在使用装饰器扩展函数功能的同时，保留原函数属性"这一目的。这里functools本身
+也是一个装饰器。
+
+functools.wraps():
+>>> import functools
+>>> # 定义保留原函数属性的装饰器
+... def IAmDecorator(fun):
+...     @functools.wraps(fun)
+...     def wrapper(*args, **kw):
+...         print("我真的是一个装饰器")
+...         return fun(*args, **kw)
+...     return wrapper
+...
+>>> @IAmDecorator
+... def func():
+...     print("我是原函数")
+...
+>>> func.__name__
+'func'
+
+
+
+类装饰器的概念与函数装饰器类似，使用语法上也差不多
+@ClassDecorator
+class Foo:
+    pass
+
+等价于
+
+class foo:
+    pass
+Foo = ClassDecorator(Foo)
+
+在定义类装饰器的时候，要保证class中存在 __init__ 和 __call__ 两种方法。其中 __init__ 方法用以接收原函数或类，
+__call__  方法用以实现装饰逻辑
+
+
+__init__  负责在初始化类实例的时候，将传入的函数或类绑定到这个实例上；
+__call__  方法与一般的函数装饰器差不多，连构造都没什么两样，__call__方法就是一个函数装饰器
+
+
+
+多个装饰器可以嵌套；也可以理解为下一个装饰器的值是上一个装饰器的参数
+
+举例来说，下面两段代码是等价的：
+@f1(args)
+@f2
+def func():
+    pass
+
+...AND...
+
+def func():
+    pass
+
+func = f1(arg)(f2(func))

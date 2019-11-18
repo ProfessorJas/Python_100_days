@@ -1,0 +1,19 @@
+Identity: 身份标识, 这种特殊的属性也在很多地方被称为“引用”。
+
+1.1 id()
+id(object): return the "identity" of an object. This is an integer which is guaranteed to be 
+unique and constant for this object during its lifetime. Two objects with non-overlapping lifetimes 
+may have have the same 'id()' value.
+
+id can be valued as the virtual address of an object.
+
+1.2 is
+is的作用是比较对象的标识。
+
+1.3 sys.getrefcount()
+sys.getrefcount(object): return the reference count of the object. The count returned is generally on higher 
+than you might expect, because it includes the (temporary) reference as an argument to 'getrefcount'
+
+List, Dictionary, Set: 可变对象
+Number, String, Tuple: 不可变对象
+
