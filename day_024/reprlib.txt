@@ -1,0 +1,73 @@
+13. 格式化输出
+
+13.1 reprlib模块
+reprlib提供了一个定制化版本的repr()函数，用于缩略显示大型或深层嵌套的容器对象，将容器中的对象按照一定的规律输出。
+reprlib包含了一个类、一个实例对象，一个方法
+
+1. class.reprlib.Repr
+Repr类，该类提供格式化服务，对于实现与内置的repr()类似的函数很有用；添加了不同对象类型的大小限制，以避免生长过长的表示
+
+2. reprlib.aRepr
+Repr类的实例，用于提供下面描述的Repr()函数。更改对象的属性将影响repr()和Python调试器使用大小的限制。
+
+3. reprlib.repr(obj)
+这是aRepr的repr() 方法。它返回一个与内置同名函数返回的字符串类似的字符串，但对大多数大小都有限制
+
+4. @reprlib.recursive_repr(fillvalue="...")
+方法的装饰器，用于检测同一线程中的recursive calling。如果recursive call，则返回fillvalue，否则执行通常的调用
+
+Ex.: recursive_repr.py
+
+Repr对象具有的属性
+- Repr.maxLevel     --      递归表示的深度限制，默认是6
+- Repr.maxdict
+- Repr.maxlist
+- Repr.maxtuple
+- Repr.maxset
+- Repr.maxfrozenset
+- Repr.maxdeque
+- Repr.maxarray     --      命名对象类型的条目数限制，maxdict是4，maxarray是5，其他是6
+- Repr.maxlong      --      表示一个整数最大字符数，默认是40
+- Repr.maxstring    --      表示一个字符串最大字符数，默认是30
+- Repr.maxother     --      表示其它类型的最大字符数，默认是20
+
+Ex. repr_maxlevel.py
+
+13.2 pprint模块
+pprint模块提供了更加复杂的打印控制，其输出的内置对象和用户自定义对象能够被解释器直接读取。当输出结果过长而需要折行时，
+“美化输出机制”会添加换行符和缩进，以更清楚地展示数据结构
+
+13.3 textwrap 模块
+textwrap 能够格式化文本段落，以适应给定的屏幕宽度，该模块提供了一些便利功能以及可以完成所用工作的类。如果只是包装
+或填充一个或两个文本字符串，那么便利功能应该足够好；否则应使用一个模块化功能提高效率。
+
+13.4 locale模块
+locale模块处理与特定地域文化相关的数据格式。locale模块的format函数包含一个grouping属性，可直接将数字格式化为带有组分隔符的样式。
+
+
+14. String模块
+String模块包含一个通用的template类，具有适用于最终用户的简化语法。它允许用户在不更改逻辑的情况下定制自己的应用
+.
+.
+.
+
+19. 用于操作列表的工具
+许多对于数据结构的需求可以通过内置列表类型来满足。但是，有时也会需要具有不同消费比的替代实现。
+
+19.1 array 模块
+array 模块提供了一种array()对象，它类似于列表，但只能存储类型一致的数据且存储密度更高。
+
+Ex. arr_module_test.py
+
+19.2 collections 模块
+collections模块提供了一种deque()对象，它类似于列表，但从左端添加和弹出的速度较快，而在中间查找的速度较慢。
+此种对象适用于实现队列和广度优先树搜索
+
+Ex. deque_test.py
+
+19.3 heapq模块
+
+heapq模块提供了基于常规列表来实现堆的函数。最小值的条目总是保持在位置0。
+这对于需要重复访问最小元素而不希望运行完整列表的应用来说非常有用
+
+Ex. heapq_test.py

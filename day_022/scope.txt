@@ -1,0 +1,82 @@
+Python NameSpace & Scope
+
+NameSpace defines 了在某个Scope内 变量名 和 绑定值 之间的对应关系，NameSpace is the collection of the keys and the values,
+
+Keys and values are one-to-one relationship. 
+
+Scope 定义了 NameSpace中的变量能够在多大范围内起作用
+
+NameSpace在Python interpreter中是以dictionary的形式存在的，是一种看得见摸得着的实体存在
+Scope是Python interpreter定义的一种规则，这种规定确定了运行时变量查找的顺序，是一种虚的规定
+
+-- NameSpace
+A NameSpace is a mapping from names to objects. Most NameSpace are currently implemented as Python dictionaries.
+
+不同文件夹里可以有相同名字的文件
+
+相同的对象名可以存在不同的命名空间中
+
+
+-- 命名空间的种类
+1) built-in names(内置名称): Python语言内置的名称，如abs、char和异常BaseException、Exception等
+    lifetime：
+    在Python解释器启动时被创建，解释器退出时才被删除
+
+2) global names(全局名称): 模块中定义的名称，记录了模块的变量，包括函数，类，其它导入到模块、模块级和常量
+    lifetime:
+    对于一个Python模块的global NameSpace, 它在这个module被import的时候创建，在解释器退出的时候退出；
+
+3) local names(局部名称): 函数中定义的名称，记录了函数的变量，包括函数的参数和局部定义的变量。(类中定义的也是)
+    lifetime:
+    对于一个函数的local NameSpace，它在函数每次被调用的时候创建，函数返回的时候被删除。
+
+
+# var1 是全局名称
+var1 = 7
+def some_func():
+    # var2 是局部名称 
+    var2 = 5
+
+    def some_inner_func():
+        # var3 是内嵌的局部名称
+        var3 = 3
+
+
+-- Scope
+A scope is a Textual region of a python program where a NameSpace is directly accessible.
+"Directly accessible" here means that an unqualified reference to a name attempts to find the name in the namespace
+
+作用域就是一个Python程序可以访问命名空间的正文区域
+- Python程序中，直接访问一个变量，会从内到外依次访问所有的作用域，直达找到，否则会报未定义的错误
+- Python中，程序的变量并不是在哪个位置都可以访问的，访问权限决定于这个变量是在哪里赋值的
+- Python中，变量的作用域决定了在哪一部分程序可以访问哪个特定的变量名称
+
+-- 作用域种类
+L (Local): 最内层，包含局部变量，比如一个函数/方法内部
+E (Enclosing): 包含了非局部(non-local)也非全局(non-global)的变量。
+                比如两个嵌套函数，一个函数(或类) A里面又包含了一个函数B, 那么对于B中的名称来说A中的作用域就为non-local
+G (Global): 当前脚本的最外层，比如当前模块的全局变量
+B (Built-in): 包含了内建的变量/关键字等，最后被搜索
+
+作用域规则顺序为: L -> E -> G -> B
+
+
+-- global and nonlocal
+变量访问顺序:
+    当前作用域局部变量 -> 外层作用域变量 -> 再外层作用域变量 -> ... -> 当前模块全局变量 -> python内置变量
+    - global: 全局变量，当局部作用域改变全局变量用global，同时还可以定义新的全局变量
+    - nonlocal: 外层嵌套函数的变量，nonlocal不能定义新的外层函数变量，只能改变已有的外层函数变量，同时nonlocal不能改变全局变量
+
+num = 1
+def fun1():
+    # 申明访问全局变量
+    global num      # 需要使用global关键字申明
+
+    print(num)  # 1
+
+    num = 123
+    print(num)  # 123
+
+fun1()
+
+print(num)      # 123
